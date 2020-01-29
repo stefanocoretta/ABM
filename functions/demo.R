@@ -116,7 +116,7 @@ source(paramsFile)
 
 cat("Done.\nLet's run the simulation!\nIn progress... ")
 
-source_part(file.path("Rcmd", "ABMmain.R"), 21, 65)
+source_part(file.path("Rcmd", "ABMmain.R"), 21, 75)
 
 cat("Done.\nThe results are in ", params$rootLogDir, ".\n", sep = "")
 
