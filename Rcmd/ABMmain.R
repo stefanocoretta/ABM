@@ -10,8 +10,8 @@
 ################################################################################
 
 # set path
-ABMpath <- "/homes/m.gubian/ABM/ABM" # "/homes/johanna.cronenberg/ABM/localRepo"
-setwd(ABMpath)
+ABMpath <- here::here() # "/homes/s.coretta/GitHub/ABM"
+# setwd(ABMpath)
 
 # load libraries and parameters
 source(file.path("Rcmd", "loadLibraries.R"))

@@ -31,11 +31,11 @@ inv_dct_from_emuR <- function(X, N = 11) {
 reconstruct_tracks <- function(df, cols) {
   valueColumns <- grep(cols, names(df), value = T)
   coeffs <- as.matrix(dplyr::select(df, valueColumns))
-  
+
   reconstructedTracks <- c(apply(coeffs, 1, function(x) {
     inv_dct_from_emuR(X = x, N = 21)
   }))
-  
+
   track.df <- data.frame(track = reconstructedTracks, time = rep(seq(0, 1, length = 21), times = nrow(coeffs)),
                          initial = rep(as.character(df$initial), each = 21), label = rep(as.character(df$label), each = 21),
                          word = rep(as.character(df$word), each = 21), speaker = rep(as.character(df$speaker), each = 21),
@@ -49,7 +49,7 @@ reconstruct_tracks <- function(df, cols) {
 cat("Welcome to a quick demo of the ABM.\nWe will model a /u/-fronting process with data from Harrington & Schiel (2017, Language).\nPress ESC to stop anytime.\n")
 
 # set path to code directory
-ABMpath <- ""
+ABMpath <- here::here()
 while(dir.exists(ABMpath) == F) {
   enteredPath <- readline(prompt = "Enter path to code directory, e.g. '/homes/myName/Downloads/ABM' (in quotes): ")
   ABMpath <- str_sub(enteredPath, 2, -2)
@@ -146,14 +146,14 @@ cat("First some boxplots to compare the values before and after the interactions
 
 df1 <- p[nrInteractions %in% c(0, max(p$nrInteractions)),]
 df1$nrInteractions <- as.factor(df1$nrInteractions)
-p1 <- ggplot(df1) + aes(x = group, y = DCT0, fill = group, linetype = nrInteractions) + geom_boxplot() + 
-  facet_wrap(~initial) + theme_light(base_size = 16, base_family = "Verdana") + 
+p1 <- ggplot(df1) + aes(x = group, y = DCT0, fill = group, linetype = nrInteractions) + geom_boxplot() +
+  facet_wrap(~initial) + theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "none", strip.text.x = element_text(color = "black")) + xlab("")
-p2 <- ggplot(df1) + aes(x = group, y = DCT1, fill = group, linetype = nrInteractions) + geom_boxplot() + 
-  facet_wrap(~initial) + theme_light(base_size = 16, base_family = "Verdana") + 
+p2 <- ggplot(df1) + aes(x = group, y = DCT1, fill = group, linetype = nrInteractions) + geom_boxplot() +
+  facet_wrap(~initial) + theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "none", strip.text.x = element_text(color = "black")) + xlab("")
-p3 <- ggplot(df1) + aes(x = group, y = DCT2, fill = group, linetype = nrInteractions) + geom_boxplot() + 
-  facet_wrap(~initial) + theme_light(base_size = 16, base_family = "Verdana") + 
+p3 <- ggplot(df1) + aes(x = group, y = DCT2, fill = group, linetype = nrInteractions) + geom_boxplot() +
+  facet_wrap(~initial) + theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "bottom", strip.text.x = element_text(color = "black")) + xlab("")
 
 suppressWarnings(print(plot_grid(p1, p2, p3, align = "v", nrow = 3, rel_heights = c(0.85, 0.85, 1))))
@@ -166,20 +166,20 @@ if (makePlot %in% c("no", "n", FALSE, "nein")) {
 
 cat("The next plots shows the development of the feature values over time, i.e. nr of interactions.\n")
 
-df.avg1 <- p %>% group_by(group, initial, nrInteractions) %>% 
+df.avg1 <- p %>% group_by(group, initial, nrInteractions) %>%
   dplyr::summarise(DCT0 = mean(DCT0), DCT1 = mean(DCT1), DCT2 = mean(DCT2))
 
-p1 <- ggplot(df.avg1) + aes(y = DCT0, x = nrInteractions, col = group) + 
-  geom_line(size = 1.2) + ylab("DCT0") + xlab("") + facet_grid(~initial) + 
-  theme_light(base_size = 16, base_family = "Verdana") + 
+p1 <- ggplot(df.avg1) + aes(y = DCT0, x = nrInteractions, col = group) +
+  geom_line(size = 1.2) + ylab("DCT0") + xlab("") + facet_grid(~initial) +
+  theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "none", strip.text.x = element_text(color = "black"))
-p2 <- ggplot(df.avg1) + aes(y = DCT1, x = nrInteractions, col = group) + 
-  geom_line(size = 1.2) + ylab("DCT1") + xlab("") + facet_grid(~initial) + 
-  theme_light(base_size = 16, base_family = "Verdana") + 
+p2 <- ggplot(df.avg1) + aes(y = DCT1, x = nrInteractions, col = group) +
+  geom_line(size = 1.2) + ylab("DCT1") + xlab("") + facet_grid(~initial) +
+  theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "none", strip.text.x = element_text(color = "black"))
-p3 <- ggplot(df.avg1) + aes(y = DCT2, x = nrInteractions, col = group) + 
-  geom_line(size = 1.2) + ylab("DCT2") +  xlab("") + facet_grid(~initial) + 
-  theme_light(base_size = 16, base_family = "Verdana") + 
+p3 <- ggplot(df.avg1) + aes(y = DCT2, x = nrInteractions, col = group) +
+  geom_line(size = 1.2) + ylab("DCT2") +  xlab("") + facet_grid(~initial) +
+  theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "bottom", strip.text.x = element_text(color = "black"))
 
 suppressWarnings(print(plot_grid(p1, p2, p3, align = "v", nrow = 3, rel_heights = c(0.85, 0.85, 1))))
@@ -197,13 +197,13 @@ pop <- readRDS(file.path(params$rootLogDir, params$simulationName, "pop.0.rds"))
 
 groups <- pop %>% group_by(agentID, group) %>% dplyr::summarise()
 intLog <- groups %>% plyr::rename(c("agentID"="perceiverID")) %>% dplyr::left_join(intLog, by = "perceiverID")
-rate.df <- intLog %>% dplyr::mutate(perceiverLabel = ifelse(word %in% c("seep", "heed", "keyed", "feed"), "i:", 
+rate.df <- intLog %>% dplyr::mutate(perceiverLabel = ifelse(word %in% c("seep", "heed", "keyed", "feed"), "i:",
                                                             ifelse(word %in% c("soup", "who'd", "cooed", "food"), "u:", "ju:"))) %>%
   group_by(simulationNr, perceiverLabel, group) %>% dplyr::summarise(rate = 1-(sum(accepted)/n()))
 
-print(ggplot(rate.df) + aes(x = simulationNr * params$interactionsPerSnapshot, y = rate, col = group) + 
-  geom_line(size = 1.2) + xlab("number of interactions") + ylab("rejection rate") + 
-  facet_wrap(~perceiverLabel) + theme_light(base_size = 16, base_family = "Verdana") + 
+print(ggplot(rate.df) + aes(x = simulationNr * params$interactionsPerSnapshot, y = rate, col = group) +
+  geom_line(size = 1.2) + xlab("number of interactions") + ylab("rejection rate") +
+  facet_wrap(~perceiverLabel) + theme_light(base_size = 16, base_family = "Verdana") +
   theme(legend.position = "bottom", strip.text.x = element_text(color = "black")))
 
 # reconstruct F2 tracks
@@ -217,7 +217,7 @@ cat("Since we are dealing with the first three DCTs derived from the F2 trajecto
 tracks <- reconstruct_tracks(p[nrInteractions %in% c(0, max(p$nrInteractions))], "DCT")
 print(ggplot(tracks) + aes(x = time) +
   geom_line(aes(y = mean, col = group, linetype = as.factor(nrInteractions)), size = 1.2) +
-  theme_light(base_size = 16, base_family = "Verdana") + theme(legend.position = "bottom", strip.text.x = element_text(color = "black")) + 
+  theme_light(base_size = 16, base_family = "Verdana") + theme(legend.position = "bottom", strip.text.x = element_text(color = "black")) +
   ylab("reconstructed F2 [bark]") + facet_wrap(~initial) + scale_linetype_discrete(name = "nr of interactions"))
 
 cat("Thanks for taking the time to go through this demo!")
