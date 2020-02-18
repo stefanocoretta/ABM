@@ -6,7 +6,7 @@
 # ABM developed by Florian Schiel and Jonathan Harrington                      #
 # Adapted by Johanna Cronenberg and Michele Gubian                             #
 #                                                                              #
-# Copyright 2019, Institute of Phonetics and Speech Processing, LMU Munich.    #
+# Copyright 2020, Institute of Phonetics and Speech Processing, LMU Munich.    #
 #                                                                              #
 ################################################################################
 
@@ -30,11 +30,11 @@ library("rlist")
 library("dtt")
 library("mclust")
 
-source(file.path(ABMpath, "functions/interactions.R"))
-source(file.path(ABMpath, "functions/calculations.R"))
-source(file.path(ABMpath, "functions/simulations.R"))
-source(file.path(ABMpath, "functions/splitandmerge.R"))
-source(file.path(ABMpath, "functions/debugging.R"))
+source("functions/interactions.R")
+source("functions/calculations.R")
+source("functions/simulations.R")
+source("functions/splitandmerge.R")
+source("functions/debugging.R")
 
 coreABM <- function(input.df, params, logDir) {
   # This function runs the main ABM routine. Assumes that params and input.df have been loaded.
